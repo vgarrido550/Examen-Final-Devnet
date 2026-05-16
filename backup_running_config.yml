@@ -1,0 +1,16 @@
+---
+- name: Backup running config
+  hosts: routers
+  gather_facts: no
+
+  tasks:
+    - name: Respaldar running-config
+      ios_command:
+        commands:
+          - show running-config
+      register: config
+
+    - name: Guardar backup
+      copy:
+        content: "{{ config.stdout[0] }}"
+        dest: "./backup_running_config.txt"

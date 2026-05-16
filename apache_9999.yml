@@ -1,0 +1,24 @@
+---
+- name: Instalar Apache puerto 9999
+  hosts: localhost
+  connection: local
+  become: yes
+
+  tasks:
+
+    - name: Instalar Apache
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+
+    - name: Cambiar puerto Apache
+      replace:
+        path: /etc/apache2/ports.conf
+        regexp: 'Listen 80'
+        replace: 'Listen 9999'
+
+    - name: Reiniciar Apache
+      service:
+        name: apache2
+        state: restarted
